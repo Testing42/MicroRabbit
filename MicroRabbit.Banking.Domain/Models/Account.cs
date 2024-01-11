@@ -11,8 +11,8 @@ namespace MicroRabbit.Banking.Domain.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        public string AccountType { get; set; }
+        
+        public string? AccountType { get; set; }
         [Required]
         public decimal AccountBalance { get; set; }
     }

@@ -23,11 +23,11 @@ namespace MicroRabbit.Infra.IoC
             services.AddTransient<IEventBus, RabbitMQBus>();
 
             //application services
-            services.AddTransient<IAccountService, AccountService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             //Data
-            services.AddTransient<IAccountRepository, AccountRepository>();
-            services.AddTransient<BankingDbContext>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<BankingDbContext>();
         }
     }
 }
