@@ -12,6 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MediatR;
+using MicroRabbit.Banking.Domain.Commands;
+using MicroRabbit.Banking.Domain.CommandHandlers;
 
 namespace MicroRabbit.Infra.IoC
 {
@@ -22,12 +25,18 @@ namespace MicroRabbit.Infra.IoC
             //domain bus
             services.AddTransient<IEventBus, RabbitMQBus>();
 
+            //domain banking commands
+            services.AddTransient<IRequestHandler<CreateTransferCommand, bool>, TransferCommandHandler>();
+
             //application services
-            services.AddScoped<IAccountService, AccountService>();
+            //services.AddScoped<IAccountService, AccountService>();
+            services.AddTransient<IAccountService, AccountService>();
 
             //Data
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<BankingDbContext>();
+            //services.AddScoped<IAccountRepository, AccountRepository>();
+            //services.AddScoped<BankingDbContext>();
+            services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<BankingDbContext>();
         }
     }
 }
