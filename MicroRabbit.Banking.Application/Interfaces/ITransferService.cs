@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MicroRabbit.Banking.Application.Interfaces
 {
-    public interface IAccountService
+    public interface ITransferService
     {
         IEnumerable<Account> GetAccounts();
         void Transfer(AccountTransfer accountTransfer);

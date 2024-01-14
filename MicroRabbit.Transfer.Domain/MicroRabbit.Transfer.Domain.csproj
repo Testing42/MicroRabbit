@@ -7,22 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Command\**" />
-    <Compile Remove="Interfaces\**" />
-    <EmbeddedResource Remove="Command\**" />
-    <EmbeddedResource Remove="Interfaces\**" />
-    <None Remove="Command\**" />
-    <None Remove="Interfaces\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Events\" />
     <Folder Include="EventHandlers\" />
     <Folder Include="CommandHandlers\" />
+    <Folder Include="Command\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MicroRabbit.Domain.Core\MicroRabbit.Domain.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MicroRabbit.Banking.Application.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService : ITransferService
     {
       public readonly IAccountRepository _accountRepository;
       public readonly IEventBus _bus;

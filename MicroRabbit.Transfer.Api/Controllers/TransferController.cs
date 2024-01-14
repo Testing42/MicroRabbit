@@ -9,15 +9,15 @@ using MicroRabbit.Banking.Application.Models;
 using MicroRabbit.Banking.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MicroRabbit.Banking.Api.Controllers
+namespace MicroRabbit.Transfer.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BankingController : ControllerBase
+    public class TransferController : ControllerBase
     {
-        private readonly IAccountService _accountService;
+        private readonly ITransferService _accountService;
 
-        public BankingController(IAccountService accountService)
+        public TransferController(ITransferService accountService)
         {
             _accountService = accountService;
         }
