@@ -9,6 +9,7 @@ using MediatR;
 using MicroRabbit.Banking.Data.Context;
 using MicroRabbit.Infra.IoC;
 using System.Reflection;
+using MicroRabbit.Transfer.Data.Context;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,13 +18,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Add DbContext
+
 builder.Services.AddDbContext<BankingDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BankingDbConnection"));
 });
 
+
 // Registering services from DependencyContainer
-DependencyContainer.RegisterServices(builder.Services);
+DependencyContainer.RegisterServices(builder.Services, builder.Configuration);
 
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();

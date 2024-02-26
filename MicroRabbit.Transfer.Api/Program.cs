@@ -5,16 +5,22 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
+builder.Services.AddControllers();
 
 // Add DbContext
+
 builder.Services.AddDbContext<TransferDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("TransferDbConnection"));
 });
 
+
+
 // Registering services from DependencyContainer
-DependencyContainer.RegisterServices(builder.Services);
+DependencyContainer.RegisterServices(builder.Services, builder.Configuration);
+
 
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -28,7 +34,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Get
 
 //trying to get second microservice to work
 
-builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

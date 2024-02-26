@@ -15,28 +15,44 @@ using System.Threading.Tasks;
 using MediatR;
 using MicroRabbit.Banking.Domain.Commands;
 using MicroRabbit.Banking.Domain.CommandHandlers;
+using MicroRabbit.Transfer.Application.Interfaces;
+using MicroRabbit.Transfer.Domain.Interfaces;
+using MicroRabbit.Transfer.Data.Repository;
+using MicroRabbit.Transfer.Data.Context;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace MicroRabbit.Infra.IoC
 {
     public class DependencyContainer
     {
-        public static void RegisterServices(IServiceCollection services) 
+        public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
-            //domain bus
+            // Domain bus
             services.AddTransient<IEventBus, RabbitMQBus>();
 
-            //domain banking commands
+            // Domain banking commands
             services.AddTransient<IRequestHandler<CreateTransferCommand, bool>, TransferCommandHandler>();
 
-            //application services
-            //services.AddScoped<IAccountService, AccountService>();
+            // Application services
             services.AddTransient<IAccountService, AccountService>();
 
-            //Data
-            //services.AddScoped<IAccountRepository, AccountRepository>();
-            //services.AddScoped<BankingDbContext>();
+            // Data
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<BankingDbContext>();
+
+            // Register BankingDbContext with proper configuration
+            services.AddDbContext<BankingDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("BankingDbConnection")));
+
+
+            // Register TransferDbContext with proper configuration
+            services.AddDbContext<TransferDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("TransferDbConnection")));
+
+            // Assuming these services are needed here, which is typically not the case in a well-separated microservices design
+            services.AddTransient<ITransferRepository, TransferRepository>();
+            services.AddTransient<ITransferService, TransferService>();
         }
     }
 }
