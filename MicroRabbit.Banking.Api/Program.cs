@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Add DbContext
-
+//this setup for the db context connection was needed to preform get from the database
 builder.Services.AddDbContext<BankingDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BankingDbConnection"));

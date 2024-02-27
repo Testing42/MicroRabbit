@@ -1,5 +1,8 @@
+using MicroRabbit.Domain.Core.Bus;
 using MicroRabbit.Infra.IoC;
 using MicroRabbit.Transfer.Data.Context;
+using MicroRabbit.Transfer.Domain.EventHandlers;
+using MicroRabbit.Transfer.Domain.Events;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -10,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Add DbContext
-
+//this setup for the db context connection was needed to preform get from the database
 builder.Services.AddDbContext<TransferDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("TransferDbConnection"));
@@ -32,8 +35,6 @@ builder.Services.AddSwaggerGen(c =>
 // Add MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
-//trying to get second microservice to work
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -54,4 +55,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+ConfigureEventBus(app);
+
 app.Run();
+
+static void ConfigureEventBus(WebApplication app)
+{
+    var eventBus = app.Services.GetRequiredService<IEventBus>();
+    eventBus.Subscribe<TransferCreatedEvent, TransferEventHandler>();
+}

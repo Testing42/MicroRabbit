@@ -21,6 +21,8 @@ using MicroRabbit.Transfer.Data.Repository;
 using MicroRabbit.Transfer.Data.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using MicroRabbit.Transfer.Domain.Events;
+using MicroRabbit.Transfer.Domain.EventHandlers;
 
 namespace MicroRabbit.Infra.IoC
 {
@@ -33,6 +35,9 @@ namespace MicroRabbit.Infra.IoC
 
             // Domain banking commands
             services.AddTransient<IRequestHandler<CreateTransferCommand, bool>, TransferCommandHandler>();
+
+            //domain events
+            services.AddTransient<IEventHandler<TransferCreatedEvent>, TransferEventHandler>();
 
             // Application services
             services.AddTransient<IAccountService, AccountService>();
