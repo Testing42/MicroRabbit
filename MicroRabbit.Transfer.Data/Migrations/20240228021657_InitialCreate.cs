@@ -22,7 +22,7 @@ namespace MicroRabbit.Transfer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Accounts", x => x.Id);
+                    table.PrimaryKey("PK_Transferlog", x => x.Id);
                 });
         }
 
@@ -30,7 +30,7 @@ namespace MicroRabbit.Transfer.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Transferlogs");
+                name: "Transferlog");
         }
     }
 }
