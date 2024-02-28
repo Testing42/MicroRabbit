@@ -31,7 +31,19 @@ namespace MicroRabbit.Infra.IoC
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
             // Domain bus
-            services.AddTransient<IEventBus, RabbitMQBus>();
+            services.AddSingleton<IEventBus, RabbitMQBus>(sp =>
+            {
+                var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+                return new RabbitMQBus(sp.GetService<IMediator>(), scopeFactory);
+            });
+
+            //connections needed to publish to database & get the database contents
+            services.AddTransient<ITransferRepository, TransferRepository>();
+            services.AddTransient<ITransferService, TransferService>();
+
+
+            //Subscriptions
+            services.AddTransient<TransferEventHandler>();
 
             // Domain banking commands
             services.AddTransient<IRequestHandler<CreateTransferCommand, bool>, TransferCommandHandler>();
@@ -55,9 +67,6 @@ namespace MicroRabbit.Infra.IoC
             services.AddDbContext<TransferDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("TransferDbConnection")));
 
-            // Assuming these services are needed here, which is typically not the case in a well-separated microservices design
-            services.AddTransient<ITransferRepository, TransferRepository>();
-            services.AddTransient<ITransferService, TransferService>();
         }
     }
 }
